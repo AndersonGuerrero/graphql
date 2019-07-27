@@ -1,0 +1,104 @@
+"valida los tipos de nivel"
+
+union GlobalSearch = Course | Student | Monitor
+
+enum Level{
+    pricipiante
+    intermedio
+    avanzado
+}
+
+type Course {
+    _id: ID!
+    title: String!
+    teacher: String
+    description: String!
+    topic: String
+    people: [Student]
+    level: Level
+}
+
+input CouserInput {
+    title: String!
+    teacher: String
+    description: String!
+    topic: String
+    level: Level
+}
+
+input CouserEditInput {
+    title: String
+    teacher: String
+    description: String
+    topic: String
+    level: Level
+}
+
+interface Person{
+  _id: ID!
+  name: String!
+  email: String!
+}
+
+type Student implements Person {
+    _id: ID!
+    name: String!
+    email: String!
+    avatar: String
+}
+
+type Monitor implements Person {
+    _id: ID!
+    name: String!
+    email: String!
+    phone: String
+}
+
+
+input PersonInput {
+    name: String!
+    email: String!
+    phone: String
+    avatar: String
+}
+
+input PersonEditInput {
+    name: String
+    email: String
+    phone: String
+    avatar: String
+}
+
+type Query {
+    "Devuelve todos los cursos"
+    getCourses: [Course]
+    "Devuelve un curso"
+    getCourse(_id: ID!): Course
+
+    "Devuelve todos las personas"
+    getPeople: [Person]
+    "Devuelve una persona"
+    getPerson(_id: ID!): Person
+
+    "Ejecuta busqueda golbal"
+    searchItems(keyword: String!): [GlobalSearch]
+}
+
+type Mutation {
+    "Crea un curso"
+    createCourse(input: CouserInput!): Course
+    "Edita un curso"
+    editCourse(_id: ID!, input: CouserEditInput!): Course
+    "Elimina un Curso"
+    deleteCourse(_id: ID!): Boolean
+
+    "Crea una Persona"
+    createPerson(input: PersonInput!): Person
+    "Edita una Persona"
+    editPerson(_id: ID!, input: PersonEditInput!): Person
+    "Elimina una Estudiante"
+    deleteStudent(_id: ID!): Boolean
+
+    "Agregar una persona a un curso"
+    addPeople(courseID: ID!, personID: ID!): Course
+}
